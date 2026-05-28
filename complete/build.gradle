@@ -109,8 +109,10 @@ dependencies {
     runtimeOnly "org.postgresql:postgresql"
     testImplementation "org.apache.grails:grails-testing-support-datamapping"
     testImplementation "org.apache.grails:grails-testing-support-views-gson"
+    testImplementation testFixtures("org.apache.grails:grails-geb")
     testImplementation "org.mockito:mockito-core"
     testImplementation "org.spockframework:spock-core"
+    testImplementation platform("org.testcontainers:testcontainers-bom:1.20.4")
     testImplementation "org.testcontainers:postgresql"
     testImplementation "org.testcontainers:spock"
     testImplementation "org.testcontainers:testcontainers"
