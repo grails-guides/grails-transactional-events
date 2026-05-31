@@ -109,13 +109,18 @@ dependencies {
     runtimeOnly "org.postgresql:postgresql"
     testImplementation "org.apache.grails:grails-testing-support-datamapping"
     testImplementation "org.apache.grails:grails-testing-support-views-gson"
-    testImplementation testFixtures("org.apache.grails:grails-geb")
     testImplementation "org.mockito:mockito-core"
     testImplementation "org.spockframework:spock-core"
-    testImplementation platform("org.testcontainers:testcontainers-bom:$testcontainersVersion")
-    testImplementation "org.testcontainers:postgresql"
-    testImplementation "org.testcontainers:spock"
-    testImplementation "org.testcontainers:testcontainers"
+
+    integrationTestImplementation "org.apache.grails:grails-testing-support-datamapping"
+    integrationTestImplementation "org.apache.grails:grails-testing-support-views-gson"
+    integrationTestImplementation testFixtures("org.apache.grails:grails-geb")
+    integrationTestImplementation "org.seleniumhq.selenium:selenium-remote-driver"
+    integrationTestImplementation "org.spockframework:spock-core"
+    integrationTestImplementation platform("org.testcontainers:testcontainers-bom:$testcontainersVersion")
+    integrationTestImplementation "org.testcontainers:postgresql"
+    integrationTestImplementation "org.testcontainers:spock"
+    integrationTestImplementation "org.testcontainers:testcontainers"
 }
 
 compileJava.options.release = 21
