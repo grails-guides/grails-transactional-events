@@ -9,7 +9,7 @@ The guide demonstrates the cleanest Grails 8 answer to a recurring problem: how 
 | Directory | What it is |
 |---|---|
 | `initial/` | Vanilla Grails 8 starter, what you have after generating a new app on [start.grails.org](https://start.grails.org). |
-| `complete/` | The fully wired sample - three domain classes (`Customer`, `Order`, `AuditLog`), the `OrderPlacedEvent` POGO, the `OrderService` publisher, three `@TransactionalEventListener` beans, and the Spock `@Integration` spec that proves the AFTER_COMMIT contract. |
+| `complete/` | The fully wired sample - three domain classes (`Customer`, `Order`, `AuditLog`), the `OrderPlacedEvent` POGO, the `OrderService` publisher, three `@TransactionalEventListener` services, and the Spock `@Integration` spec that proves the AFTER_COMMIT contract. |
 
 ## Running
 
@@ -43,12 +43,15 @@ class OrderService {
     }
 }
 
-// 2. Consume it from any number of listener beans:
-class AuditListener {
+// 2. Consume it from any number of listener services. Grails auto-registers
+//    each by name (no resources.groovy wiring). An AFTER_COMMIT listener runs
+//    after the publisher's transaction commits, so it opens its own with
+//    withNewTransaction - not @Transactional, whose AST transform would hide
+//    the listener method from Spring:
+class AuditService {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     void onOrderPlaced(OrderPlacedEvent event) {
-        new AuditLog(...).save(failOnError: true)
+        AuditLog.withNewTransaction { new AuditLog(...).save(failOnError: true) }
     }
 }
 ```
