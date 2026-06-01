@@ -45,9 +45,9 @@ class OrderService {
 
 // 2. Consume it from any number of listener services. Grails auto-registers
 //    each by name (no resources.groovy wiring). An AFTER_COMMIT listener runs
-//    after the publisher's transaction commits, so it opens its own with
-//    withNewTransaction - not @Transactional, whose AST transform would hide
-//    the listener method from Spring:
+//    after the publisher's transaction commits, so it opens its own
+//    transaction with withNewTransaction - not @Transactional, whose AST
+//    transform would hide the listener method from Spring:
 class AuditService {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     void onOrderPlaced(OrderPlacedEvent event) {
