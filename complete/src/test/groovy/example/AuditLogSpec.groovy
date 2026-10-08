@@ -41,6 +41,20 @@ class AuditLogSpec extends Specification implements DomainUnitTest<AuditLog> {
         domain.errors['occurredAt'].code == 'nullable'
     }
 
+    void "order identifiers and the snapshot total are required"() {
+        when:
+        populate()
+        domain.orderId = null
+        domain.customerId = null
+        domain.orderTotal = null
+
+        then:
+        !domain.validate()
+        domain.errors['orderId'].code == 'nullable'
+        domain.errors['customerId'].code == 'nullable'
+        domain.errors['orderTotal'].code == 'nullable'
+    }
+
     void "an orderTotal below the 0.01 minimum is rejected"() {
         when:
         populate()
