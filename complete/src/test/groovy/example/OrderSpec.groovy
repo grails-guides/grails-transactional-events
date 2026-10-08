@@ -30,6 +30,15 @@ class OrderSpec extends Specification implements DataTest {
         order.errors['customer'].code == 'nullable'
     }
 
+    void "an order requires a total"() {
+        when:
+        Order order = new Order(customer: validCustomer())
+
+        then:
+        !order.validate()
+        order.errors['total'].code == 'nullable'
+    }
+
     void "a zero total is rejected (min is 0.01)"() {
         when:
         Order order = new Order(customer: validCustomer(), total: BigDecimal.ZERO)
